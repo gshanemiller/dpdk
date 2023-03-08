@@ -20,6 +20,8 @@
 #include "mlx5.h"
 #include "mlx5_autoconf.h"
 
+#include <shane.h>
+
 /* TX burst subroutines return codes. */
 enum mlx5_txcmp_code {
 	MLX5_TXCMP_CODE_EXIT = 0,
@@ -626,6 +628,7 @@ mlx5_tx_free_elts(struct mlx5_txq_data *__rte_restrict txq,
 		part = RTE_MIN(part, n_elts);
 		MLX5_ASSERT(part);
 		MLX5_ASSERT(part <= txq->elts_s);
+    shane_callback(&txq->elts[txq->elts_tail & txq->elts_m], part);
 		mlx5_tx_free_mbuf(txq,
 				  &txq->elts[txq->elts_tail & txq->elts_m],
 				  part, olx);

@@ -41,6 +41,7 @@ sources = files(
         'mlx5_vlan.c',
         'mlx5_utils.c',
         'mlx5_devx.c',
+        'shane.c'
 )
 
 if is_linux
