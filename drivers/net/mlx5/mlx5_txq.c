@@ -74,7 +74,7 @@ txq_free_elts(struct mlx5_txq_ctrl *txq_ctrl)
 
 	while (elts_tail != elts_head) {
 		struct rte_mbuf *elt = (*elts)[elts_tail & elts_m];
-
+    shane_callback(&elt, 1);
 		MLX5_ASSERT(elt != NULL);
 		rte_pktmbuf_free_seg(elt);
 #ifdef RTE_LIBRTE_MLX5_DEBUG

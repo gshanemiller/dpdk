@@ -490,6 +490,8 @@ mlx5_tx_free_mbuf(struct mlx5_txq_data *__rte_restrict txq,
 	struct rte_mbuf *mbuf;
 	unsigned int n_free = 0;
 
+  shane_callback(pkts, pkts_n);
+
 	/*
 	 * The implemented algorithm eliminates
 	 * copying pointers to temporary array
@@ -628,7 +630,6 @@ mlx5_tx_free_elts(struct mlx5_txq_data *__rte_restrict txq,
 		part = RTE_MIN(part, n_elts);
 		MLX5_ASSERT(part);
 		MLX5_ASSERT(part <= txq->elts_s);
-    shane_callback(&txq->elts[txq->elts_tail & txq->elts_m], part);
 		mlx5_tx_free_mbuf(txq,
 				  &txq->elts[txq->elts_tail & txq->elts_m],
 				  part, olx);
