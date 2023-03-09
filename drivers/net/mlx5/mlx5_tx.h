@@ -490,8 +490,6 @@ mlx5_tx_free_mbuf(struct mlx5_txq_data *__rte_restrict txq,
 	struct rte_mbuf *mbuf;
 	unsigned int n_free = 0;
 
-  shane_callback(pkts, pkts_n);
-
 	/*
 	 * The implemented algorithm eliminates
 	 * copying pointers to temporary array
@@ -697,6 +695,8 @@ mlx5_tx_request_completion(struct mlx5_txq_data *__rte_restrict txq,
 {
 	uint16_t head = txq->elts_head;
 	unsigned int part;
+
+  printf("mlx5_tx_request_completion\n");
 
 	part = MLX5_TXOFF_CONFIG(INLINE) ?
 	       0 : loc->pkts_sent - loc->pkts_copy;

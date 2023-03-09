@@ -74,7 +74,6 @@ txq_free_elts(struct mlx5_txq_ctrl *txq_ctrl)
 
 	while (elts_tail != elts_head) {
 		struct rte_mbuf *elt = (*elts)[elts_tail & elts_m];
-    shane_callback(&elt, 1);
 		MLX5_ASSERT(elt != NULL);
 		rte_pktmbuf_free_seg(elt);
 #ifdef RTE_LIBRTE_MLX5_DEBUG
@@ -165,6 +164,7 @@ txq_sync_cq(struct mlx5_txq_data *txq)
 	for (i = 0; i < txq->cqe_s; i++) {
 		cqe = &txq->cqes[i];
 		cqe->op_own = MLX5_CQE_INVALIDATE;
+    printf("really?\n");
 	}
 	/* Resync CQE and WQE (WQ in reset state). */
 	rte_io_wmb();

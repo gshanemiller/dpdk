@@ -168,8 +168,8 @@ static __rte_always_inline void
 shane_mlx5_tx_comp_flush(struct mlx5_txq_data *__rte_restrict txq,
   volatile struct mlx5_cqe *last_cqe)
 {
-  struct rte_mbuf *mbuf = txq->elts[elts_tail];
-  printf("got mbuf %p timestamp %lu\n", mbuf, last_cqe->timestamp);
+  struct rte_mbuf *mbuf = txq->elts[txq->elts_tail];
+  printf("got mbuf %p timestamp %lu MLX5_TX_COMP_MAX_CQE %u\n", mbuf, last_cqe->timestamp, MLX5_TX_COMP_MAX_CQE);
 }
 
 /**
@@ -232,7 +232,6 @@ mlx5_tx_handle_completion(struct mlx5_txq_data *__rte_restrict txq,
 			++txq->cq_ci;
 			txq->cq_pi = txq->cq_ci;
 			last_cqe = NULL;
-		  shane_mlx5_tx_comp_flush(txq, last_cqe);
 			continue;
 		}
 		/* Normal transmit completion. */
@@ -244,6 +243,7 @@ mlx5_tx_handle_completion(struct mlx5_txq_data *__rte_restrict txq,
 		ring_doorbell = true;
 		++txq->cq_ci;
 		last_cqe = cqe;
+		shane_mlx5_tx_comp_flush(txq, last_cqe);
 		/*
 		 * We have to restrict the amount of processed CQEs
 		 * in one tx_burst routine call. The CQ may be large
